@@ -64,6 +64,11 @@ Window.update
 Window.loop do
     Window.draw_font(Window.width/2-150, Window.height/2 - 50 , "Game Over...", fontL)
     Window.draw_font(Window.width/2-50, Window.height/2 + 20 , "Continue?", font)
+    Window.draw_font(Window.width/2-100, Window.height/2 + 60 , "Yes: Press A key", font)
+    Window.draw_font(Window.width/2-100, Window.height/2 + 95 , " No: Press S key", font)
 
+    if Input.keyDown?( K_A )
+      break
+    end
 
 end
