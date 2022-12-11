@@ -34,7 +34,7 @@ Window.loop do
   Sprite.check(player, enemies)
   Sprite.check(player, enemies2)
 
-  # 生存判定
+  # 死亡判定
     if player.dead_flag == 1
         break
     end
