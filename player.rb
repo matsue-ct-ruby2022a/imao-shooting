@@ -8,7 +8,7 @@ class Player < Sprite
     def initialize(x, y, image) # 追加
       @score = 0
       @dead_flag = 0
-      @hp = 5
+      @hp = 100
       super
     end
   
