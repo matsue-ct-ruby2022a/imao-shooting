@@ -7,11 +7,12 @@ class Player < Sprite
     end
   
     def update
-      self.x += Input.x
-      self.y += Input.y
+      self.x += 3*Input.x
+      self.y += 3*Input.y
     end
   
     def shot # 追加
       @score += 1
     end
+
   end
