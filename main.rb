@@ -18,7 +18,7 @@ enemies = [] #敵1
 enemies2 = [] #敵2
 bullets1 = [] #弾
 bullets2 = [] #弾
-50.times do
+10.times do
   enemies << Enemy.new(rand(0..(640 - 32 - 1)), rand((480 - 32 - 1)), enemy_img)  # 敵描画
   enemies2 << Enemy.new(rand(0..(640 - 32 - 1)), rand((480 - 32 - 1)), enemy2_img)  # 敵描画
 end
@@ -51,11 +51,20 @@ Window.loop do
   Sprite.check(player, enemies)
   Sprite.check(player, enemies2)
 
-  if player.dead_flag == 1
+
+
+  if player.dead_flag == 1  # 死亡判定
     break
   end
 
   count += 1
+
+  # 連続的に衝突が起これば衝突判定を避ける
+  if player.hit_flag == 1
+    player.hit_cont = 0 # hp_gapを120にリセット
+  end
+
+  player.hit_flag = 0
 
 end
 
@@ -67,8 +76,16 @@ Window.loop do
     Window.draw_font(Window.width/2-100, Window.height/2 + 60 , "Yes: Press A key", font)
     Window.draw_font(Window.width/2-100, Window.height/2 + 95 , " No: Press S key", font)
 
+    # コンティニューあり
     if Input.keyDown?( K_A )
-      break
+      # HPを全回復、スコアそのまま、敵そのまま続行
+
+    end
+
+    # コンティニューなし
+    if Input.keyDown?( K_S )
+      # タイトルに戻る
+        break
     end
 
 end
