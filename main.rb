@@ -13,7 +13,7 @@ player_img = Image.load("image/player.png")
 enemy_img = Image.load("image/enemy.png")
 enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
-title = Sprite.new(80, 0, Image.load( "image/title.png"))
+title = Sprite.new(0, 0, Image.load( "image/title.png"))
 start = Sprite.new(248, 300, Image.load( "image/start.png"))
 
 count = 0
