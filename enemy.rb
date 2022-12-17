@@ -19,4 +19,11 @@ class Enemy < Sprite
       end
 
     end
+
+    def update
+      self.y += 1
+      if self.y >= 480
+        self.vanish
+      end
+    end
   end
