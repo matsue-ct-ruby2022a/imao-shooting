@@ -5,7 +5,7 @@ y = 300
 n = 0
 i = 2
 
-image = Image.load("airplane.png")
+image = Image.load("image/airplane.png")
 
 class Sprite
 attr_reader :n
