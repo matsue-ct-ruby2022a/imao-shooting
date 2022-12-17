@@ -14,6 +14,23 @@ fontL = Font.new(64) # 追加
 
 map_font = Font.new(28); font = Font.new(28)#movie用
 
+volume = 250
+time = 0
+Mcount = 0
+Ncount = 0
+
+bullet = Sound.new("voice/AnyConv.com__SNES-Shoot.wav")  # sound.wav読み込み
+menusound = Sound.new("voice/ed.wav")  # bgm.mid読み込み
+storysound = Sound.new("voice/iyana ziken dattane.wav")
+sound = Sound.new('voice/Mystic Edge.wav')
+
+bullet.set_volume(volume, time)
+menusound.set_volume(volume, time)
+storysound.set_volume(volume, time)
+sound.set_volume(volume, time)
+
+storysound.loop_count =(-1)
+sound.loop_count =(-1)
 
 
 
@@ -116,6 +133,11 @@ Window.loop do
 
     if start_flag == 0 and movie_flag == 0
 
+      if(Mcount==0)
+        menusound.play
+        Mcount = 1
+      end
+      
       mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
       title.draw#タイトル画像の描画
       start.draw#startボタンの表示
@@ -144,6 +166,10 @@ Window.loop do
       if player1.dead_flag == 0 and player2.dead_flag == 0
 
 
+        if(Ncount==0)
+          sound.play
+          Ncount = 1
+        end
         map2.draw(x, -y)
         Window.draw(0, 0, rt)
 
@@ -293,6 +319,8 @@ Window.loop do
 
     elsif movie_flag == 1
 
+        menusound.stop
+        storysound.play
         black.draw
         ap1.draw
         ap2.draw
@@ -330,6 +358,8 @@ Window.loop do
 
         if imao.a == 1
             movie_flag = 0
+            storysound.stop
+            menusound.play
         end
 
     end
