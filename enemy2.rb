@@ -1,5 +1,8 @@
 class Enemy2 < Sprite
-    def hit
+  def update
+    self.y += 1
+    if self.y >= 480
       self.vanish
     end
   end
+end

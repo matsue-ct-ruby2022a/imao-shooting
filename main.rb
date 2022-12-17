@@ -1,7 +1,9 @@
 require 'dxruby'
 
+require_relative 'Map'
 require_relative 'player'
 require_relative 'enemy'
+require_relative 'enemy2'
 require_relative 'bullet'
 require_relative 'imao'
 
@@ -12,8 +14,8 @@ map_font = Font.new(35); font = Font.new(35)#movie用
 
 
 
-#画像読み込み
-player_img = Image.load("image/player.png")
+#画像
+player_img = Image.load("image/imao.png")
 enemy_img = Image.load("image/enemy.png")
 enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
@@ -22,13 +24,39 @@ start = Sprite.new(248, 300, Image.load( "image/start.png"))
 movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
 
 
-#movie用読み込み
+#movie
 black = Sprite.new(0, 0, Image.load( "image/black.png"))
 ap1 = Sprite.new(100, 300, Image.load( "image/ap1.png"))
 ap2 = Sprite.new(250, 300, Image.load( "image/ap2.png"))
 ap3 = Sprite.new(400, 300, Image.load( "image/ap3.png"))
 imao = Imao.new(0, 300, Image.load( "image/imao.png"))
 
+#アイテム
+z = []
+z.push(Image.load("image/megane.png")) #pixnoteで作成
+z.push(Image.load("image/kyokasho.png"))
+z.push(Image.load("image/head.png"))
+z.push(Image.load("image/bakuhatsu.png"))
+z.push(Image.load("image/dogo1.png"))
+z.push(Image.load("image/kaminari.png"))
+z.push(Image.load("image/imao.png"))
+
+#背景
+m = []
+m.push(Image.new(32, 32, [120, 210, 200]))
+m.push(Image.new(32, 32, [255, 255, 255]))
+m.push(Image.load("image/kabe.png"))
+m.push(Image.load("image/kabe2.png"))
+m.push(Image.load("image/kabe3.png"))
+m.push(Image.load("image/kabe4.png"))
+
+map2 = Map.new("map1.dat", m, rt=RenderTarget.new(640,480)) #背景
+
+#背景の座標
+x = 0
+y = 0
+
+#各種パラメータ
 count = 0
 n = 30
 dead_flag = 0
@@ -36,8 +64,8 @@ start_flag = 0
 movie_flag = 0
 continue_flag = 1
 
-player1 = Player.new(320, 400, player_img) #自機
-player2 = Player.new(320, 100, player_img) #自機
+player1 = Player.new(320, 400, player_img) 
+player2 = Player.new(320, 100, player_img) 
 mouse = Sprite.new(0, 0, Image.new(10, 10, C_WHITE)) #マウス
 enemies = [] #敵1
 enemies2 = [] #敵2
@@ -45,6 +73,7 @@ p1_bullets1 = [] #弾
 p1_bullets2 = [] #弾
 p2_bullets1 = [] #弾
 p2_bullets2 = [] #弾
+e=[]#アイテム表示用
 
 
 Window.loop do
@@ -60,10 +89,6 @@ Window.loop do
           when start
               if Input.mouse_push?(M_LBUTTON)
                   start_flag = 1 #
-                  n.times do #敵を生成
-                    enemies << Enemy.new(rand(0..(640 - 32 - 1)), rand((0 - 32 - 240)), enemy_img)  # 敵描画
-                    enemies2 << Enemy.new(rand(0..(640 - 32 - 1)), rand((0 - 32 - 240)), enemy2_img)  # 敵描画
-                  end
               end
           when movie
             if Input.mouse_push?(M_LBUTTON)
@@ -78,7 +103,27 @@ Window.loop do
     elsif start_flag == 1
 
       if player1.dead_flag == 0
-        
+
+        map2.draw(x, -y)
+        Window.draw(0, 0, rt)
+
+        if y%30==0
+          v = z[rand(0..5)]
+          if v==z[2]
+              e.push(Enemy2.new(rand(0..608),-40,v))
+          end
+          if v==z[0] or v==z[1] or v==z[3] or v==z[4] or v==z[5]
+              e.push(Enemy.new(rand(0..608),-40,v))
+          end
+        end
+
+        e.size.times do |i|
+          e[i].update
+          Sprite.draw(e[i])
+          Sprite.check(player1, e[i])
+          Sprite.check(player2, e[i])
+        end
+
         player1.draw
         player1.move1
 
@@ -116,18 +161,12 @@ Window.loop do
         p2_bullets1.each do |bullet1|
           bullet1.move2
         end
-        # enemies.each do |enemies|
-        #   enemies.move
-        # end
 
-        # enemies2.each do |enemies2|
-        #   enemies2.move
-        # end
-
-        # Sprite.draw(enemies)
-        # Sprite.draw(enemies2)
-        Window.draw_font(10, 10, "HP：#{player1.hp}/100", font) # 追加
-        Window.draw_font(450, 10, "HP：#{player1.hp}/100", font) # 追加
+        col1 = player1.hp <= 50 ? [255,0,0] : [0,255,0]
+        col2 = player2.hp <= 50 ? [255,0,0] : [0,255,0]
+        
+        Window.draw_font(10, 10, "HP：#{player2.hp}/100", font, {color:col2}) # 追加
+        Window.draw_font(450, 10, "HP：#{player1.hp}/100", font, {color:col1}) # 追加
 
         # Sprite.check(player, enemies)
         # Sprite.check(player, enemies2)
@@ -137,6 +176,7 @@ Window.loop do
         # Sprite.check(bullets2, enemies2)
 
         count += 1 # 弾連射用
+        y += 1
 
         if Input.keyDown?( K_B )
           break
