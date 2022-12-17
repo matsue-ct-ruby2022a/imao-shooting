@@ -13,7 +13,7 @@ player_img = Image.load("image/player.png")
 enemy_img = Image.load("image/enemy.png")
 enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
-title = Sprite.new(80, 0, Image.load( "image/title.png"))
+title = Sprite.new(0, 0, Image.load( "image/title.png"))
 start = Sprite.new(248, 300, Image.load( "image/start.png"))
 
 count = 0
@@ -32,8 +32,6 @@ bullets2 = [] #弾
 
 Window.loop do
 
-
-  # if continue_flag == 1
     if start_flag == 0
 
       mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
@@ -43,8 +41,8 @@ Window.loop do
       case mouse
           when start
               if Input.mouse_push?(M_LBUTTON)
-                  start_flag = 1
-                  n.times do #敵を表示
+                  start_flag = 1 #
+                  n.times do #敵を生成
                     enemies << Enemy.new(rand(0..(640 - 32 - 1)), rand((480 - 32 - 1)), enemy_img)  # 敵描画
                     enemies2 << Enemy.new(rand(0..(640 - 32 - 1)), rand((480 - 32 - 1)), enemy2_img)  # 敵描画
                   end
@@ -52,8 +50,6 @@ Window.loop do
       end
 
     elsif start_flag == 1
-
-  
 
       if player.dead_flag == 0
         player.update
@@ -82,6 +78,10 @@ Window.loop do
 
         Sprite.check(player, enemies)
         Sprite.check(player, enemies2)
+        Sprite.check(bullets1, enemies)
+        Sprite.check(bullets2, enemies)
+        Sprite.check(bullets1, enemies2)
+        Sprite.check(bullets2, enemies2)
 
         count += 1
 
@@ -106,9 +106,4 @@ Window.loop do
 
       end
     end
-    # elsif continue_flag == 0
-    #   break
-    # end
-  # end  
-
 end
