@@ -45,9 +45,8 @@ n = 100
 dead_flag = 0
 start_flag = 0
 movie_flag = 0
-abc_flag = 0
 continue_flag = 1
-
+option_flag = 0
 player = Player.new(100, 100, player_img) #自機
 mouse = Sprite.new(0, 0, Image.new(10, 10, C_WHITE)) #マウス
 enemies = [] #敵1
@@ -60,7 +59,7 @@ Window.loop do
 
 
   # if continue_flag == 1
-    if start_flag == 0 and movie_flag == 0 and abc_flag == 0
+    if start_flag == 0 and movie_flag == 0
 
         mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
         title.draw#タイトル画像の描画
@@ -87,7 +86,7 @@ Window.loop do
                 end
             when option
                 if Input.mouse_push?(M_LBUTTON)
-                    abc_flag = 1
+                    option_flag = 1
                 end
         end
 
@@ -181,11 +180,28 @@ Window.loop do
         if imao.a == 1
             movie_flag = 0
         end
-    elsif abc_flag == 1
+    elsif option_flag == 1
         mode.draw
         easy.draw
         normal.draw
         hard.draw
+
+        case mouse
+            when easy
+                if Input.mouse_push?(M_LBUTTON)
+                    imao_mouse = 1
+                    option_flag = 0
+                end
+            when normal
+                if Input.mouse_push?(M_LBUTTON)
+                    break
+                end
+            when hard
+                if Input.mouse_push?(M_LBUTTON)
+                    option_flag = 0
+                end           
+        end
+
     end
     # elsif continue_flag == 0
     #   break
