@@ -3,15 +3,18 @@ class Enemy < Sprite
     def initialize(x, y, image)
       super
       @damage =1
-      @hp = 5
+      @enemy_hp = 2
     end
 
+    def move
+      self.y += 1
+    end
 
     def hit
 
-      @hp = @hp - @damage
+      @enemy_hp = @enemy_hp - @damage
 
-      if @hp == 0
+      if @enemy_hp <= 0
         self.vanish
       end
 
