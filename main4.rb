@@ -38,10 +38,10 @@ ap7 = Sprite.new(470, 300, Image.load( "image/black9.png"))
 ap8 = Sprite.new(545, 300, Image.load( "image/black10.png"))
 
 #option
-mode = Sprite.new(0, 0, Image.load( "image/mode.png"))
-easy = Sprite.new(255, 235, Image.load("image/easy.png"))
-normal = Sprite.new(255, 295, Image.load("image/normal.png"))
-hard = Sprite.new(258, 358, Image.load("image/hard.png"))
+title2 = Sprite.new(0, 0, Image.load( "image/title2.png"))
+changescreen = Sprite.new(230, 235, Image.load("image/changescreen.png"))
+fin = Sprite.new(230, 295, Image.load("image/fin.png"))
+back = Sprite.new(230, 358, Image.load("image/back.png"))
 
 #アイテム
 z = []
@@ -258,13 +258,13 @@ Window.loop do
         end
 
     elsif option_flag == 1
-        mode.draw
-        easy.draw
-        normal.draw
-        hard.draw
+        title2.draw
+        changescreen.draw
+        fin.draw
+        back.draw
 
         case mouse
-            when easy
+            when changescreen
                 if Input.mouse_push?(M_LBUTTON)
                     #背景
                     m = []
@@ -277,11 +277,11 @@ Window.loop do
                     map2 = Map.new("map1.dat", m, rt=RenderTarget.new(640,480))
                     option_flag = 0
                 end
-            when normal
+            when fin
                 if Input.mouse_push?(M_LBUTTON)
                     break
                 end
-            when hard
+            when back
                 if Input.mouse_push?(M_LBUTTON)
                     #背景
                     # m = []
