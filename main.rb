@@ -24,9 +24,9 @@ enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
 title = Sprite.new(0, 0, Image.load( "image/title.png"))
 
-start = Sprite.new(248, 300, Image.load( "image/start.png"))
+start = Sprite.new(248, 290, Image.load( "image/start.png"))
 movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
-
+option = Sprite.new(253, 350, Image.load( "image/option.png"))
 
 
 #movie
@@ -40,6 +40,12 @@ ap5 = Sprite.new(320, 300, Image.load( "image/black7.png"))
 ap6 = Sprite.new(395, 300, Image.load( "image/black8.png"))
 ap7 = Sprite.new(470, 300, Image.load( "image/black9.png"))
 ap8 = Sprite.new(545, 300, Image.load( "image/black10.png"))
+
+#option
+title2 = Sprite.new(0, 0, Image.load( "image/title2.png"))
+changescreen = Sprite.new(190, 220, Image.load("image/changescreen.png"))
+fin = Sprite.new(280, 295, Image.load("image/fin.png"))
+back = Sprite.new(280, 360, Image.load("image/back.png"))
 
 #アイテム
 z = []
@@ -81,6 +87,7 @@ dead_flag = 0
 start_flag = 0
 movie_flag = 0
 continue_flag = 1
+option_flag = 0
 
 player1 = Player.new(500, 300, player_img) 
 player2 = Player.new(200, 300, player_img) 
@@ -114,12 +121,13 @@ end
 
 Window.loop do
 
-    if start_flag == 0 and movie_flag == 0
+    if start_flag == 0 and movie_flag == 0 and option_flag == 0
 
       mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
       title.draw#タイトル画像の描画
       start.draw#startボタンの表示
       movie.draw#movieボタンの表示
+      option.draw#optionボタンの表示
 
       case mouse
           when start
@@ -136,6 +144,10 @@ Window.loop do
                     movie_flag = 1
                 end
                 movie_flag = 1
+            end
+          when option
+            if Input.mouse_push?(M_LBUTTON)
+                option_flag = 1
             end    
       end
 
@@ -297,7 +309,6 @@ Window.loop do
         ap1.draw
         ap2.draw
         ap3.draw
-
         ap4.draw
         ap5.draw
         ap6.draw
@@ -331,7 +342,36 @@ Window.loop do
         if imao.a == 1
             movie_flag = 0
         end
+    elsif option_flag == 1
+      title2.draw
+      changescreen.draw
+      fin.draw
+      back.draw
 
+      case mouse
+          when changescreen
+                if Input.mouse_push?(M_LBUTTON)
+                    #背景
+                    m = []
+                    m.push(Image.load("image/imao.png"))
+                    m.push(Image.new(32, 32, [255, 255, 255]))
+                    m.push(Image.load("image/kabe.png"))
+                    m.push(Image.load("image/kabe2.png"))
+                    m.push(Image.load("image/kabe3.png"))
+                    m.push(Image.load("image/kabe4.png"))
+                    map2 = Map.new("map1.dat", m, rt=RenderTarget.new(640,480))
+                    option_flag = 0
+                end
+          when fin
+                if Input.mouse_push?(M_LBUTTON)
+                    break
+                end
+          when back
+                if Input.mouse_push?(M_LBUTTON)
+                    option_flag = 0
+                end
+            
+        end
     end
 
 end
