@@ -120,10 +120,10 @@ end
 
 
 Window.loop do
-
+  mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
     if start_flag == 0 and movie_flag == 0 and option_flag == 0
 
-      mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
+      
       title.draw#タイトル画像の描画
       start.draw#startボタンの表示
       movie.draw#movieボタンの表示
