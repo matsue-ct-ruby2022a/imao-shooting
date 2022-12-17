@@ -8,9 +8,12 @@ LAND = Image.load('image/land.png')
 SPASE = Image.load('image/R.png')
 
 wall = Image.load("image/rennga-2.jpe")
+taku = Image.load("image/taku1.png")
 
 x = 0
 y = 0
+mode = 0
+count = 0
 position_x = -64
 position_y = 0
 speed = 1
@@ -29,12 +32,32 @@ end
 
 Window.loop do
   #背景スクロール
-  y += speed
-  Window.draw(x, y, wall)
-  Window.draw(x, y+400, wall)
-  Window.draw(x, y-400, wall)
-  y -= 400 if(y >= 400)
+  if(mode <= 0)
+    y += speed
+    Window.draw(x, y, wall)
+    Window.draw(x, y+400, wall)
+    Window.draw(x, y-400, wall)
+    y -= 400 if(y >= 400)
+    count = 0
+  else#(mode = 1)
+    if(count <= 480)
+      y += speed
+      Window.draw(x, y, wall)
+      Window.draw(x, y+400, wall)
+      Window.draw(x, y-400, wall)
+      y -= 400 if(y >= 400)
+      Window.draw(x, -480 + count, taku)
+      count += 1
+    else
 
+      Window.draw(x, 0, taku)
+    end
+  end
+
+  mode += Input.y
+
+
+=begin
   #壁生成
   24.times do |i|
     15.times do |j|
@@ -47,4 +70,8 @@ Window.loop do
   rout = 1 if(position_x <= -128)
   rout = -1 if(position_x >= 0)
   position_x += rout
+
+  
+=end
+  
 end
