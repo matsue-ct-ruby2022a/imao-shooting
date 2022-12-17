@@ -1,19 +1,21 @@
 require 'dxruby'
 
+require_relative 'Map'
 require_relative 'player'
 require_relative 'enemy'
+require_relative 'enemy2'
 require_relative 'bullet'
 require_relative 'imao'
-
-# attr_accessor :movie_flag
 
 
 font = Font.new(32) # 追加
 fontL = Font.new(64) # 追加
 map_font = Font.new(28); font = Font.new(28)#movie用
 
-#画像読み込み
-player_img = Image.load("image/player.png")
+
+
+#画像
+player_img = Image.load("image/imao.png")
 enemy_img = Image.load("image/enemy.png")
 enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
@@ -22,7 +24,8 @@ start = Sprite.new(248, 290, Image.load( "image/start.png"))
 movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
 option = Sprite.new(253, 350, Image.load( "image/option.png"))
 
-#movie用読み込み
+
+#movie
 black = Sprite.new(0, 0, Image.load( "image/black1.png"))
 imao = Imao.new(0, 300, Image.load( "image/black2.png"))
 ap1 = Sprite.new(20, 300, Image.load( "image/black3.png"))
@@ -34,34 +37,65 @@ ap6 = Sprite.new(395, 300, Image.load( "image/black8.png"))
 ap7 = Sprite.new(470, 300, Image.load( "image/black9.png"))
 ap8 = Sprite.new(545, 300, Image.load( "image/black10.png"))
 
-#option用読み込み
+#option
 mode = Sprite.new(0, 0, Image.load( "image/mode.png"))
 easy = Sprite.new(255, 235, Image.load("image/easy.png"))
 normal = Sprite.new(255, 295, Image.load("image/normal.png"))
 hard = Sprite.new(258, 358, Image.load("image/hard.png"))
 
+#アイテム
+z = []
+z.push(Image.load("image/megane.png")) #pixnoteで作成
+z.push(Image.load("image/kyokasho.png"))
+z.push(Image.load("image/head.png"))
+z.push(Image.load("image/bakuhatsu.png"))
+z.push(Image.load("image/dogo1.png"))
+z.push(Image.load("image/kaminari.png"))
+z.push(Image.load("image/imao.png"))
+
+#背景
+m = []
+m.push(Image.new(32, 32, [120, 210, 200]))
+m.push(Image.new(32, 32, [255, 255, 255]))
+m.push(Image.load("image/kabe.png"))
+m.push(Image.load("image/kabe2.png"))
+m.push(Image.load("image/kabe3.png"))
+m.push(Image.load("image/kabe4.png"))
+
+map2 = Map.new("map1.dat", m, rt=RenderTarget.new(640,480)) #背景
+
+#背景の座標
+x = 0
+y = 0
+
+#各種パラメータ
 count = 0
-n = 100
+n = 30
 dead_flag = 0
 start_flag = 0
 movie_flag = 0
 continue_flag = 1
 option_flag = 0
-player = Player.new(100, 100, player_img) #自機
+
+player1 = Player.new(320, 400, player_img) 
+player2 = Player.new(320, 100, player_img) 
 mouse = Sprite.new(0, 0, Image.new(10, 10, C_WHITE)) #マウス
 enemies = [] #敵1
 enemies2 = [] #敵2
-bullets1 = [] #弾
-bullets2 = [] #弾
+p1_bullets1 = [] #弾
+p1_bullets2 = [] #弾
+p2_bullets1 = [] #弾
+p2_bullets2 = [] #弾
+e=[]#アイテム表示用
 
 
 Window.loop do
 
+    mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
 
-  # if continue_flag == 1
     if start_flag == 0 and movie_flag == 0 and option_flag == 0
 
-        mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
+        
         title.draw#タイトル画像の描画
         start.draw#startボタンの表示
         movie.draw#movieボタンの表示
@@ -70,11 +104,7 @@ Window.loop do
         case mouse
             when start
                 if Input.mouse_push?(M_LBUTTON)
-                    start_flag = 1
-                    n.times do #敵を表示
-                        enemies << Enemy.new(rand(0..(640 - 32 - 1)), rand((480 - 32 - 1)), enemy_img)  # 敵描画
-                        enemies2 << Enemy.new(rand(0..(640 - 32 - 1)), rand((480 - 32 - 1)), enemy2_img)  # 敵描画
-                    end
+                        start_flag = 1 #
                 end
             when movie
                 if Input.mouse_push?(M_LBUTTON)
@@ -87,48 +117,92 @@ Window.loop do
             when option
                 if Input.mouse_push?(M_LBUTTON)
                     option_flag = 1
-                end
+                end    
         end
 
     elsif start_flag == 1
 
-  
+        if player1.dead_flag == 0
 
-        if player.dead_flag == 0
-            player.update
-            player.draw
+            map2.draw(x, -y)
+            Window.draw(0, 0, rt)
+
+            if y%30==0
+                v = z[rand(0..5)]
+                if v==z[2]
+                    e.push(Enemy2.new(rand(0..608),-40,v))
+                end
+                if v==z[0] or v==z[1] or v==z[3] or v==z[4] or v==z[5]
+                    e.push(Enemy.new(rand(0..608),-40,v))
+                end
+            end
+
+            e.size.times do |i|
+                e[i].update
+                Sprite.draw(e[i])
+                Sprite.check(player1, e[i])
+                Sprite.check(player2, e[i])
+            end
+
+            player1.draw
+            player1.move1
+
+            player2.draw
+            player2.move2
 
             if Input.key_push?(K_SPACE)
 
-                bullets1 << Bullet.new(player.x, player.y)
+                p1_bullets1 << Bullet.new(player1.x, player1.y)
 
-            elsif Input.key_down?(K_SPACE) && count%3 == 0
-                bullets2 << Bullet.new(player.x, player.y)
+            # elsif Input.key_down?(K_SPACE) && count%5 == 0
+            #     p1_bullets2 << Bullet.new(player1.x, player1.y)
             end
 
-            bullets2.each do |bullet2|
-                bullet2.move
+            # p1_bullets2.each do |bullet2|
+            #   bullet2.move1
+            # end
+
+            p1_bullets1.each do |bullet1|
+                bullet1.move1
+            end
+        
+            if Input.key_push?(K_LSHIFT)
+
+                p2_bullets1 << Bullet.new(player2.x, player2.y)
+
+             # elsif Input.key_down?(K_LSHIFT) && count%5 == 0
+            #     p2_bullets2 << Bullet.new(player2.x, player2.y)
             end
 
-            bullets1.each do |bullet1|
-                bullet1.move
+            # p2_bullets2.each do |bullet2|
+            #   bullet2.move2
+            # end
+
+            p2_bullets1.each do |bullet1|
+                bullet1.move2
             end
 
-            Sprite.draw(enemies)
-            Sprite.draw(enemies2)
-            Window.draw_font(10, 10, "スコア：#{player.score}", font) # 追加
-            Window.draw_font(500, 10, "HP：#{player.hp}/5", font) # 追加
+            col1 = player1.hp <= 50 ? [255,0,0] : [0,255,0]
+            col2 = player2.hp <= 50 ? [255,0,0] : [0,255,0]
+        
+            Window.draw_font(10, 10, "HP：#{player2.hp}/100", font, {color:col2}) # 追加
+            Window.draw_font(450, 10, "HP：#{player1.hp}/100", font, {color:col1}) # 追加
 
-            Sprite.check(player, enemies)
-            Sprite.check(player, enemies2)
+            # Sprite.check(player, enemies)
+            # Sprite.check(player, enemies2)
+            # Sprite.check(bullets1, enemies)
+            # Sprite.check(bullets2, enemies)
+            # Sprite.check(bullets1, enemies2)
+            # Sprite.check(bullets2, enemies2)
 
-            count += 1
+            count += 1 # 弾連射用
+            y += 1
 
             if Input.keyDown?( K_B )
                 break
             end
         
-        elsif player.dead_flag == 1
+        elsif player1.dead_flag == 1
         
             Window.draw_font(Window.width/2-150, Window.height/2 - 50 , "Game Over...", fontL)
             Window.draw_font(Window.width/2-50, Window.height/2 + 20 , "Continue?", font)
@@ -137,8 +211,8 @@ Window.loop do
 
             if Input.keyDown?( K_A )
                 start_flag = 0
-                player.dead_flag = 0
-                player.hp = 100
+                player1.dead_flag = 0
+                player1.hp = 100
             elsif Input.keyDown?( K_S )
                 break
             end  
@@ -146,6 +220,7 @@ Window.loop do
         end
 
     elsif movie_flag == 1
+
         black.draw
         ap1.draw
         ap2.draw
@@ -177,9 +252,11 @@ Window.loop do
             when ap8
                 Window.draw_font(145, 220, "仁義なき戦いが今、始まる----", font, z:2)
         end
+
         if imao.a == 1
             movie_flag = 0
         end
+
     elsif option_flag == 1
         mode.draw
         easy.draw
@@ -189,6 +266,15 @@ Window.loop do
         case mouse
             when easy
                 if Input.mouse_push?(M_LBUTTON)
+                    #背景
+                    m = []
+                    m.push(Image.load("image/imao.png"))
+                    m.push(Image.new(32, 32, [255, 255, 255]))
+                    m.push(Image.load("image/kabe.png"))
+                    m.push(Image.load("image/kabe2.png"))
+                    m.push(Image.load("image/kabe3.png"))
+                    m.push(Image.load("image/kabe4.png"))
+                    map2 = Map.new("map1.dat", m, rt=RenderTarget.new(640,480))
                     option_flag = 0
                 end
             when normal
@@ -197,14 +283,18 @@ Window.loop do
                 end
             when hard
                 if Input.mouse_push?(M_LBUTTON)
+                    #背景
+                    # m = []
+                    # m.push(Image.new(32, 32, [0, 0, 200]))
+                    # m.push(Image.new(32, 32, [255, 255, 255]))
+                    # m.push(Image.load("image/kabe.png"))
+                    # m.push(Image.load("image/kabe2.png"))
+                    # m.push(Image.load("image/kabe3.png"))
+                    # m.push(Image.load("image/kabe4.png"))
+                    # map2 = Map.new("map1.dat", m, rt=RenderTarget.new(640,480))
                     option_flag = 0
-                end           
+                end
+            
         end
-
     end
-    # elsif continue_flag == 0
-    #   break
-    # end
-    # end  
-
 end
