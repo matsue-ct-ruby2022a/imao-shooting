@@ -10,7 +10,13 @@ require_relative 'imao'
 
 font = Font.new(32) # 追加
 fontL = Font.new(64) # 追加
+<<<<<<< HEAD
+map_font = Font.new(35); font = Font.new(35)#movie用
+
+
+=======
 map_font = Font.new(28); font = Font.new(28)#movie用
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
 
 
 
@@ -20,8 +26,21 @@ enemy_img = Image.load("image/enemy.png")
 enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
 title = Sprite.new(0, 0, Image.load( "image/title.png"))
+<<<<<<< HEAD
+start = Sprite.new(248, 300, Image.load( "image/start.png"))
+movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
+
+
+#movie用読み込み
+black = Sprite.new(0, 0, Image.load( "image/black.png"))
+ap1 = Sprite.new(100, 300, Image.load( "image/ap1.png"))
+ap2 = Sprite.new(250, 300, Image.load( "image/ap2.png"))
+ap3 = Sprite.new(400, 300, Image.load( "image/ap3.png"))
+imao = Imao.new(0, 300, Image.load( "image/imao.png"))
+=======
 start = Sprite.new(248, 290, Image.load( "image/start.png"))
 movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
 
 
 #movie
@@ -69,8 +88,13 @@ start_flag = 0
 movie_flag = 0
 continue_flag = 1
 
+<<<<<<< HEAD
+player1 = Player.new(320, 400, player_img) #自機
+player2 = Player.new(320, 100, player_img) #自機
+=======
 player1 = Player.new(320, 400, player_img) 
 player2 = Player.new(320, 100, player_img) 
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
 mouse = Sprite.new(0, 0, Image.new(10, 10, C_WHITE)) #マウス
 enemies = [] #敵1
 enemies2 = [] #敵2
@@ -78,7 +102,10 @@ p1_bullets1 = [] #弾
 p1_bullets2 = [] #弾
 p2_bullets1 = [] #弾
 p2_bullets2 = [] #弾
+<<<<<<< HEAD
+=======
 e=[]#アイテム表示用
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
 
 
 Window.loop do
@@ -94,11 +121,22 @@ Window.loop do
           when start
               if Input.mouse_push?(M_LBUTTON)
                   start_flag = 1 #
+<<<<<<< HEAD
+                  n.times do #敵を生成
+                    enemies << Enemy.new(rand(0..(640 - 32 - 1)), rand((0 - 32 - 240)), enemy_img)  # 敵描画
+                    enemies2 << Enemy.new(rand(0..(640 - 32 - 1)), rand((0 - 32 - 240)), enemy2_img)  # 敵描画
+                  end
+=======
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
               end
           when movie
             if Input.mouse_push?(M_LBUTTON)
                 if imao.a == 1
+<<<<<<< HEAD
+                    imao = Imao.new(0, 300, Image.load( "image/imao.png"))
+=======
                     imao = Imao.new(0, 300, Image.load( "image/black2.png"))
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
                     movie_flag = 1
                 end
                 movie_flag = 1
@@ -108,6 +146,12 @@ Window.loop do
     elsif start_flag == 1
 
       if player1.dead_flag == 0
+<<<<<<< HEAD
+        
+        player1.draw
+        player1.move1
+
+=======
 
         map2.draw(x, -y)
         Window.draw(0, 0, rt)
@@ -132,6 +176,7 @@ Window.loop do
         player1.draw
         player1.move1
 
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
         player2.draw
         player2.move2
 
@@ -166,7 +211,29 @@ Window.loop do
         p2_bullets1.each do |bullet1|
           bullet1.move2
         end
+        # enemies.each do |enemies|
+        #   enemies.move
+        # end
 
+<<<<<<< HEAD
+        # enemies2.each do |enemies2|
+        #   enemies2.move
+        # end
+
+        # Sprite.draw(enemies)
+        # Sprite.draw(enemies2)
+        Window.draw_font(10, 10, "HP：#{player1.hp}/100", font) # 追加
+        Window.draw_font(450, 10, "HP：#{player1.hp}/100", font) # 追加
+
+        # Sprite.check(player, enemies)
+        # Sprite.check(player, enemies2)
+        # Sprite.check(bullets1, enemies)
+        # Sprite.check(bullets2, enemies)
+        # Sprite.check(bullets1, enemies2)
+        # Sprite.check(bullets2, enemies2)
+
+        count += 1 # 弾連射用
+=======
         col1 = player1.hp <= 50 ? [255,0,0] : [0,255,0]
         col2 = player2.hp <= 50 ? [255,0,0] : [0,255,0]
         
@@ -182,6 +249,7 @@ Window.loop do
 
         count += 1 # 弾連射用
         y += 1
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
 
         if Input.keyDown?( K_B )
           break
@@ -210,15 +278,26 @@ Window.loop do
         ap1.draw
         ap2.draw
         ap3.draw
+<<<<<<< HEAD
+=======
         ap4.draw
         ap5.draw
         ap6.draw
         ap7.draw
         ap8.draw
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
         imao.update
         imao.draw
 
         case imao
+<<<<<<< HEAD
+            when ap1
+                Window.draw_font(220, 200, "僕は今尾です", font, z:2)
+            when ap2
+                Window.draw_font(220, 200, "退職します", font, z:2)
+            when ap3
+                Window.draw_font(220, 200, "ありがとうございました", font, z:2)
+=======
           when ap1
             Window.draw_font(230, 220, "----20XX年", font, z:2)
           when ap2
@@ -236,6 +315,7 @@ Window.loop do
               Window.draw_font(100, 220, "高専の未来を背負った二つの派閥の", font, z:2)
           when ap8
               Window.draw_font(145, 220, "仁義なき戦いが今、始まる----", font, z:2)
+>>>>>>> b3336cc00891c192506b6bff5fbd404deee183c2
         end
 
         if imao.a == 1
