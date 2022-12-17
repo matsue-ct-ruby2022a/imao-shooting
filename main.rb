@@ -5,6 +5,7 @@ require_relative 'player'
 require_relative 'enemy'
 require_relative 'enemy2'
 require_relative 'item1'
+require_relative 'item2'
 require_relative 'bullet'
 require_relative 'imao'
 
@@ -50,9 +51,9 @@ back = Sprite.new(280, 360, Image.load("image/back.png"))
 #アイテム
 z = []
 z.push(Image.load("image/megane.png")) #pixnoteで作成
-z.push(Image.load("image/kyokasho.png"))
 z.push(Image.load("image/head.png"))
 z.push(Image.load("image/kaminari.png"))
+z.push(Image.load("image/kyokasho.png"))
 z.push(Image.load("image/dogo1.png"))
 z.push(Image.load("image/bakuhatsu.png"))
 z.push(Image.load("image/imao.png"))
@@ -161,10 +162,12 @@ Window.loop do
 
         if y%30==0
           v = z[rand(0..4)]
-          if v==z[2]
+          if v==z[1]
               e.push(Enemy2.new(rand(0..608),-40,v))
-          elsif v==z[0] or v==z[1] or v==z[3]
+          elsif v==z[0] or v==z[2]
               e.push(Enemy.new(rand(0..608),-40,v))
+          elsif v==z[3]
+              e.push(Item2.new(rand(0..608),-40,v))
           elsif v==z[4]
             e.push(Item1.new(rand(0..608),-40,v))
           end
@@ -230,6 +233,16 @@ Window.loop do
         Sprite.check(p2_bullets1, player1)
 
         y += 1
+        player1.count += 1
+        player2.count += 1
+        if player1.count > 180
+          player1.r = 3
+        end
+        if player2.count > 180
+          player2.r = 3
+        end
+
+ 
 
         if Input.keyDown?( K_B )
           break
