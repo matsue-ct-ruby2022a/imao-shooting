@@ -11,7 +11,9 @@ require_relative 'imao'
 
 font = Font.new(32) # 追加
 fontL = Font.new(64) # 追加
+
 map_font = Font.new(28); font = Font.new(28)#movie用
+
 
 
 
@@ -21,8 +23,10 @@ enemy_img = Image.load("image/enemy.png")
 enemy2_img = Image.load("image/enemy2.png")
 BULLET_IMG = Image.load('image/enemyshot1.png')
 title = Sprite.new(0, 0, Image.load( "image/title.png"))
-start = Sprite.new(248, 290, Image.load( "image/start.png"))
+
+start = Sprite.new(248, 300, Image.load( "image/start.png"))
 movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
+
 
 
 #movie
@@ -80,6 +84,7 @@ continue_flag = 1
 
 player1 = Player.new(500, 300, player_img) 
 player2 = Player.new(200, 300, player_img) 
+
 mouse = Sprite.new(0, 0, Image.new(10, 10, C_WHITE)) #マウス
 enemies = [] #敵1
 enemies2 = [] #敵2
@@ -87,7 +92,9 @@ p1_bullets1 = [] #弾
 p1_bullets2 = [] #弾
 p2_bullets1 = [] #弾
 p2_bullets2 = [] #弾
+
 e=[]#アイテム表示用
+
 
 def hp_judge(hp)
 
@@ -118,11 +125,14 @@ Window.loop do
           when start
               if Input.mouse_push?(M_LBUTTON)
                   start_flag = 1 #
+
               end
           when movie
             if Input.mouse_push?(M_LBUTTON)
                 if imao.a == 1
+
                     imao = Imao.new(0, 300, Image.load( "image/black2.png"))
+
                     movie_flag = 1
                 end
                 movie_flag = 1
@@ -132,6 +142,7 @@ Window.loop do
     elsif start_flag == 1
 
       if player1.dead_flag == 0 and player2.dead_flag == 0
+
 
         map2.draw(x, -y)
         Window.draw(0, 0, rt)
@@ -191,9 +202,13 @@ Window.loop do
         p2_bullets1.each do |bullet1|
           bullet1.move2
         end
+        # enemies.each do |enemies|
+        #   enemies.move
+        # end
 
         col1 = hp_judge(player1.hp)
         col2 = hp_judge(player2.hp)
+
         
         
         Window.draw_font(10, 10, "HP：#{player2.hp}/50", font, {color:col2}) # 追加
@@ -282,6 +297,7 @@ Window.loop do
         ap1.draw
         ap2.draw
         ap3.draw
+
         ap4.draw
         ap5.draw
         ap6.draw
@@ -291,6 +307,7 @@ Window.loop do
         imao.draw
 
         case imao
+
           when ap1
             Window.draw_font(230, 220, "----20XX年", font, z:2)
           when ap2
@@ -308,6 +325,7 @@ Window.loop do
               Window.draw_font(100, 220, "高専の未来を背負った二つの派閥の", font, z:2)
           when ap8
               Window.draw_font(145, 220, "仁義なき戦いが今、始まる----", font, z:2)
+
         end
 
         if imao.a == 1
