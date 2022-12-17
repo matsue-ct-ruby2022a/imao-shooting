@@ -39,9 +39,9 @@ ap8 = Sprite.new(545, 300, Image.load( "image/black10.png"))
 
 #option
 title2 = Sprite.new(0, 0, Image.load( "image/title2.png"))
-changescreen = Sprite.new(230, 235, Image.load("image/changescreen.png"))
-fin = Sprite.new(230, 295, Image.load("image/fin.png"))
-back = Sprite.new(230, 358, Image.load("image/back.png"))
+changescreen = Sprite.new(190, 220, Image.load("image/changescreen.png"))
+fin = Sprite.new(280, 295, Image.load("image/fin.png"))
+back = Sprite.new(280, 360, Image.load("image/back.png"))
 
 #アイテム
 z = []
@@ -94,6 +94,7 @@ Window.loop do
     mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
 
     if start_flag == 0 and movie_flag == 0 and option_flag == 0
+        
 
         
         title.draw#タイトル画像の描画

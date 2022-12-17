@@ -8,7 +8,7 @@ class Player < Sprite
     def initialize(x, y, image) # 追加
       @score = 0
       @dead_flag = 0
-      @hp = 100
+      @hp = 50
       super
     end
   
@@ -47,11 +47,27 @@ class Player < Sprite
     
     end
   
-    def shot # 相手に衝突したとき
-      @hp -= 1
+    def shot(other) # 相手に衝突したとき
+      other_name = other.class.to_s
+
+      if other_name == 'Enemy' or other_name == 'Enemy2'
+        @hp -= 5
+        if @hp <= 0
+          @dead_flag = 1
+        end
+
+      elsif other_name == 'Item1'
+        @hp += 10
+      end
+
+    end
+
+    def hit 
+      @hp -= 3
       if @hp <= 0
         @dead_flag = 1
       end
     end
+
     
   end
