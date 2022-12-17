@@ -25,7 +25,7 @@ movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
 
 
 #movie
-black = Sprite.new(0, 0, Image.load( "image/black.png"))
+black = Sprite.new(0, 0, Image.load( "image/black1.png"))
 ap1 = Sprite.new(100, 300, Image.load( "image/ap1.png"))
 ap2 = Sprite.new(250, 300, Image.load( "image/ap2.png"))
 ap3 = Sprite.new(400, 300, Image.load( "image/ap3.png"))
