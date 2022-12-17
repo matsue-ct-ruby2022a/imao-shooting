@@ -16,4 +16,8 @@ def move
     self.draw
 end
 
+def shot
+    self.vanish
+end
+
 end
