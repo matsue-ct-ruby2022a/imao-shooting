@@ -1,7 +1,5 @@
 class Bullet < Sprite
 
-attr_accessor :d #dを外部から読み書きできる
-
 def initialize(playerX, playerY)
     @startX = playerX
     @startY = playerY
