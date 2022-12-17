@@ -1,19 +1,12 @@
 class Enemy < Sprite
-
-    def initialize(x, y, image)
-      super
-      @damage =1
-      @hp = 5
+    def hit
+      self.vanish
     end
 
-
-    def hit
-
-      @hp = @hp - @damage
-
-      if @hp == 0
+    def update
+      self.y += 1
+      if self.y >= 480
         self.vanish
       end
-
     end
   end

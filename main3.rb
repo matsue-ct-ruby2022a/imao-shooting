@@ -20,6 +20,7 @@ BULLET_IMG = Image.load('image/enemyshot1.png')
 title = Sprite.new(0, 0, Image.load( "image/title.png"))
 start = Sprite.new(248, 290, Image.load( "image/start.png"))
 movie = Sprite.new(248, 230, Image.load( "image/movie.png"))
+option = Sprite.new(253, 350, Image.load( "image/option.png"))
 
 #movie用読み込み
 black = Sprite.new(0, 0, Image.load( "image/black1.png"))
@@ -33,11 +34,18 @@ ap6 = Sprite.new(395, 300, Image.load( "image/black8.png"))
 ap7 = Sprite.new(470, 300, Image.load( "image/black9.png"))
 ap8 = Sprite.new(545, 300, Image.load( "image/black10.png"))
 
+#option用読み込み
+mode = Sprite.new(0, 0, Image.load( "image/mode.png"))
+easy = Sprite.new(255, 235, Image.load("image/easy.png"))
+normal = Sprite.new(255, 295, Image.load("image/normal.png"))
+hard = Sprite.new(258, 358, Image.load("image/hard.png"))
+
 count = 0
 n = 100
 dead_flag = 0
 start_flag = 0
 movie_flag = 0
+abc_flag = 0
 continue_flag = 1
 
 player = Player.new(100, 100, player_img) #自機
@@ -52,12 +60,13 @@ Window.loop do
 
 
   # if continue_flag == 1
-    if start_flag == 0 and movie_flag == 0
+    if start_flag == 0 and movie_flag == 0 and abc_flag == 0
 
         mouse.x, mouse.y = Input.mouse_x, Input.mouse_y#マウスの位置を取得
         title.draw#タイトル画像の描画
         start.draw#startボタンの表示
         movie.draw#movieボタンの表示
+        option.draw#optionボタンの表示
 
         case mouse
             when start
@@ -76,7 +85,10 @@ Window.loop do
                     end
                     movie_flag = 1
                 end
-            
+            when option
+                if Input.mouse_push?(M_LBUTTON)
+                    abc_flag = 1
+                end
         end
 
     elsif start_flag == 1
@@ -169,6 +181,11 @@ Window.loop do
         if imao.a == 1
             movie_flag = 0
         end
+    elsif abc_flag == 1
+        mode.draw
+        easy.draw
+        normal.draw
+        hard.draw
     end
     # elsif continue_flag == 0
     #   break
